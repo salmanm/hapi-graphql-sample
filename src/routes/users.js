@@ -1,5 +1,6 @@
 import loki from 'lokijs';
 import GraphQL from 'hapi-graphql';
+import data from '../data/users.js';
 
 import {
   GraphQLSchema,
@@ -14,22 +15,17 @@ const plugin = {
 
     const users = db.addCollection('users');
 
-    users.insert({id:'1', firstName:'Damian'});
-    users.insert({id:'2', firstName:'Salman'});
-    users.insert({id:'3', firstName:'Mark'});
-    users.insert({id:'4', firstName:'Peter'});
-    users.insert({id:'5', firstName:'Michele'});
-    users.insert({id:'6', firstName:'Mihai'});
+    data.forEach(::users.insert);
 
     function findUser(id) {
-      console.log('QUERY FOR', id);
+      console.log('Query for: ', id);
 
       return new Promise((resolve) => {
         setTimeout(() => {
           var result = users.find({id: id});
-          console.log(result);
+          console.log(result, id);
           resolve(result[0]);
-        }, 100);
+        }, 0);
       });
     }
 
